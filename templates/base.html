@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        BAMMACOS CONSULTING
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        /* ================= STICKY FOOTER ================= */
+
+        html, body{
+            height:100%;
+            margin:0;
+        }
+
+        body{
+            display:flex;
+            flex-direction:column;
+            min-height:100vh;
+        }
+
+        main.container{
+            flex:1 0 auto;
+        }
+
+        footer{
+            flex-shrink:0;
+            margin-top:auto;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo-section">
+
+        <!-- LOGO BAMMACOS -->
+        <img
+            src="{% static 'images/logo.jpg' %}"
+            alt="Logo BAMMACOS"
+            class="logo">
+
+        <div>
+
+            <h1>BAMMACOS CONSULTING</h1>
+
+            <p>
+                Système de Gestion des Ressources Humaines
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if request.user.is_authenticated %}
+
+    <div class="header-right">
+
+        <div class="welcome">
+
+            <i class="fa-solid fa-circle-user"></i>
+
+            Bonjour,
+            <strong>{{ request.user.username }}</strong>
+
+        </div>
+
+        <a class="logout-btn"
+           href="{% url 'logout' %}">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Déconnexion
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</header>
+
+
+    <!-- ================= CONTENU ================= -->
+
+    <main class="container">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 BAMMACOS CONSULTING -
+        Tous droits réservés
+
+    </footer>
+
+</body>
+
+</html>

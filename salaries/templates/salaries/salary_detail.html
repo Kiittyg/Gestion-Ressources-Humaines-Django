@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}
+Bulletin de salaire
+{% endblock %}
+
+{% block content %}
+<style>
+  
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+     --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- page header ---- */
+
+.page-header{
+    margin-bottom:28px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.page-header h2{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+    z-index:1;
+}
+
+.page-header h2 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.page-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+    position:relative;
+    z-index:1;
+}
+
+/* ---- card / slip ---- */
+
+.card{
+    background:var(--surface);
+    border-radius:20px;
+    padding:36px;
+    border:2px solid var(--indigo-soft);
+    box-shadow:var(--shadow-md);
+    max-width:560px;
+    margin:0 auto;
+}
+
+.salary-info{
+    display:flex;
+    flex-direction:column;
+}
+
+.salary-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+}
+
+.salary-row span{
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+}
+
+.salary-row strong{
+    font-size:15.5px;
+    font-weight:700;
+    color:var(--ink);
+}
+
+.salary-row .base{
+    color:var(--indigo);
+}
+
+.salary-row .deduction{
+    color:var(--red);
+}
+
+.card hr{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:6px 0;
+}
+
+.salary-row.total{
+    padding-top:22px;
+}
+
+.salary-row.total span{
+    font-size:14px;
+    color:var(--ink);
+}
+
+.salary-row.total strong{
+    color:var(--teal);
+    font-size:30px;
+    font-weight:800;
+    letter-spacing:-.01em;
+}
+
+/* ---- boutons ---- */
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:13px 22px;
+    border-radius:12px;
+    border:none;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:.25s ease;
+    font-family:'Manrope', sans-serif;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-green{
+    background:var(--teal);
+    color:#fff;
+}
+
+.btn-green:hover{
+    background:#0b7a70;
+    box-shadow:0 8px 20px rgba(13,148,136,.25);
+}
+
+.btn-blue{
+    background:var(--indigo-soft);
+    color:var(--indigo-deep);
+}
+
+.btn-blue:hover{
+    background:var(--indigo);
+    color:#fff;
+    box-shadow:0 8px 20px rgba(79,70,229,.25);
+}
+</style>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        Bulletin de salaire
+    </h2>
+
+    <p>
+        Détails de votre bulletin de salaire.
+    </p>
+
+</div>
+
+<div class="card">
+
+    <div class="salary-info">
+
+        <div class="salary-row">
+
+            <span>Employé</span>
+
+            <strong>
+                {{ salary.employee.prenom }}
+                {{ salary.employee.nom }}
+            </strong>
+
+        </div>
+
+        <div class="salary-row">
+
+            <span>Mois</span>
+
+            <strong>
+                {{ salary.get_month_display }}
+                {{ salary.year }}
+            </strong>
+
+        </div>
+
+        <div class="salary-row">
+
+            <span>Salaire de base</span>
+
+            <strong class="base">
+                {{ salary.base_salary }} FRANCS
+            </strong>
+
+        </div>
+        <div class="salary-row">
+
+            <span>Bonus</span>
+
+            <strong class="bonus">
+                {{ salary.bonus }} FRANCS
+            </strong>
+
+        </div>
+
+        <div class="salary-row">
+
+            <span>Retenues</span>
+
+            <strong class="deduction">
+                - {{ salary.deductions }} FRANCS
+            </strong>
+
+        </div>
+
+        <hr>
+
+        <div class="salary-row total">
+
+            <span>Salaire net</span>
+
+            <strong>
+                {{ salary.net_salary }} FRANCS
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;max-width:560px;margin-left:auto;margin-right:auto;">
+
+    <a class="btn btn-green"
+       href="{% url 'salary_pdf' salary.id %}">
+
+        <i class="fa-solid fa-file-pdf"></i>
+
+        Télécharger le PDF
+
+    </a>
+
+    <a class="btn btn-blue"
+       href="{% url 'employee_salary_list' %}">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Retour
+
+    </a>
+
+</div>
+
+{% endblock %}

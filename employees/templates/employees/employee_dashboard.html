@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block title %}
+Espace Employé
+{% endblock %}
+
+{% block content %}
+<style>
+ 
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+   --indigo:#1060A4;
+    --indigo-deep:#0a3f6e;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- profile card ---- */
+
+.card{
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    padding:34px;
+    margin-bottom:28px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:280px;
+    height:280px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    position:relative;
+    z-index:1;
+    flex-wrap:wrap;
+}
+
+.profile img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid rgba(255,255,255,.5);
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.profile .info h2{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.01em;
+    margin-bottom:14px;
+}
+
+.profile .info p{
+    color:rgba(255,255,255,.85);
+    font-size:14.5px;
+    font-weight:500;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.profile .info p:last-child{
+    margin-bottom:0;
+}
+
+.profile .info p strong{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:#fff;
+    font-weight:700;
+}
+
+.profile .info p i{
+    width:26px;
+    height:26px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:8px;
+    font-size:12px;
+}
+
+/* ---- quick menu grid ---- */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+}
+
+.menu-card{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:30px 26px;
+    text-decoration:none;
+    display:block;
+    text-align:left;
+    transition:.25s ease;
+    overflow:hidden;
+}
+
+.menu-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    opacity:0;
+    transition:.25s ease;
+    z-index:0;
+}
+
+.menu-card > *{
+    position:relative;
+    z-index:1;
+}
+
+.menu-card i{
+    color:var(--indigo);
+    background:var(--indigo-soft);
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px !important;
+    margin-bottom:18px;
+    transition:.25s ease;
+}
+
+.menu-card h3{
+    font-weight:700;
+    font-size:16.5px;
+    color:var(--ink);
+    margin:0 0 6px 0;
+    transition:.25s ease;
+}
+
+.menu-card p{
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--ink-soft);
+    margin:0;
+    font-weight:500;
+    transition:.25s ease;
+}
+
+a.menu-card:hover{
+    border-color:transparent;
+    transform:translateY(-5px);
+    box-shadow:var(--shadow-lg);
+}
+
+a.menu-card:hover::before{
+    opacity:1;
+}
+
+a.menu-card:hover i{
+    background:rgba(255,255,255,.16);
+    color:#fff;
+}
+
+a.menu-card:hover h3{
+    color:#fff;
+}
+
+a.menu-card:hover p{
+    color:rgba(255,255,255,.85);
+}
+
+/* état non-cliquable (fin de journée) */
+
+div.menu-card{
+    cursor:default;
+    background:var(--teal-soft);
+    border-color:transparent;
+}
+
+div.menu-card i{
+    background:rgba(255,255,255,.6);
+    color:var(--teal);
+}
+
+div.menu-card h3,
+div.menu-card p{
+    color:var(--teal);
+}
+
+div.menu-card p{
+    opacity:.85;
+}
+</style>
+
+<div class="card">
+
+    <div class="profile">
+
+        {% if employee.photo %}
+            <img src="{{ employee.photo.url }}" alt="Photo de profil">
+        {% else %}
+            <img src="https://via.placeholder.com/140" alt="Photo">
+        {% endif %}
+
+        <div class="info">
+
+            <h2>
+                {{ employee.prenom }} {{ employee.nom }}
+            </h2>
+
+            <p>
+                <strong><i class="fa-solid fa-envelope"></i> Email :</strong>
+                {{ employee.email }}
+            </p>
+
+            <p>
+                <strong><i class="fa-solid fa-building"></i> Département :</strong>
+                {{ employee.department }}
+            </p>
+
+            <p>
+                <strong><i class="fa-solid fa-briefcase"></i> Poste :</strong>
+                {{ employee.poste }}
+            </p>
+
+            <p>
+                <strong><i class="fa-solid fa-circle-check"></i> Statut :</strong>
+                Employé actif
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="grid">
+
+    {% if not attendance %}
+
+    <a class="menu-card"
+       href="{% url 'check_in' %}">
+
+        <i class="fa-solid fa-fingerprint fa-3x"></i>
+
+        <h3>Pointer mon arrivée</h3>
+
+        <p>
+            Enregistrer votre arrivée.
+        </p>
+
+    </a>
+
+    {% elif attendance.check_in and not attendance.check_out %}
+
+    <a class="menu-card"
+       href="{% url 'check_out' %}">
+
+        <i class="fa-solid fa-door-open fa-3x"></i>
+
+        <h3>Pointer mon départ</h3>
+
+        <p>
+            Enregistrer votre départ.
+        </p>
+
+    </a>
+
+    {% else %}
+
+    <div class="menu-card">
+
+        <i class="fa-solid fa-circle-check fa-3x"></i>
+
+        <h3>Présence</h3>
+
+        <p>
+            Journée de travail terminée.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <a class="menu-card"
+       href="{% url 'leave_request' %}">
+
+        <i class="fa-solid fa-calendar-plus fa-3x"></i>
+
+        <h3>Demander un congé</h3>
+
+        <p>
+            Soumettre une nouvelle demande.
+        </p>
+
+    </a>
+
+
+    <a class="menu-card"
+       href="{% url 'employee_leave_list' %}">
+
+        <i class="fa-solid fa-calendar-check fa-3x"></i>
+
+        <h3>Mes demandes</h3>
+
+        <p>
+            Consulter le statut de vos congés.
+        </p>
+
+    </a>
+
+
+    <a class="menu-card"
+       href="{% url 'employee_salary_list' %}">
+
+        <i class="fa-solid fa-money-check-dollar fa-3x"></i>
+
+        <h3>Mes bulletins</h3>
+
+        <p>
+            Télécharger vos bulletins de salaire.
+        </p>
+
+    </a>
+
+
+    <a class="menu-card"
+       href="{% url 'change_password' %}">
+
+        <i class="fa-solid fa-key fa-3x"></i>
+
+        <h3>Réinitialiser mon mot de passe</h3>
+
+        <p>
+            Modifier votre mot de passe de connexion.
+        </p>
+
+    </a>
+
+
+</div>
+
+{% endblock %}

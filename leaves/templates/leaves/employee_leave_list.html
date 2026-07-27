@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mes demandes de congé
+{% endblock %}
+
+{% block content %}
+<style>
+    
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+    --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- page header ---- */
+
+.page-header{
+    margin-bottom:28px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.page-header h2{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+    z-index:1;
+}
+
+.page-header h2 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.page-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+    position:relative;
+    z-index:1;
+}
+
+/* ---- card / table ---- */
+
+.card{
+    background:var(--surface);
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+    margin-bottom:24px;
+}
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table th{
+    background:var(--bg);
+    color:var(--ink-soft);
+    padding:15px 22px;
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+}
+
+.table td{
+    padding:16px 22px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+}
+
+.table tbody tr:last-child td{
+    border-bottom:none;
+}
+
+.table tbody tr:hover{
+    background:var(--indigo-soft);
+}
+
+/* ---- badges ---- */
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 15px;
+    border-radius:30px;
+    font-size:12.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+}
+
+.badge-warning{
+    background:var(--amber-soft);
+    color:var(--amber);
+}
+
+.badge-success{
+    background:var(--teal-soft);
+    color:var(--teal);
+}
+
+.badge-danger{
+    background:var(--red-soft);
+    color:var(--red);
+}
+
+/* ---- empty state ---- */
+
+.empty-state{
+    text-align:center;
+    padding:70px 30px;
+}
+
+.empty-state i{
+    color:var(--indigo-soft);
+    margin-bottom:20px;
+}
+
+.empty-state h3{
+    font-size:18px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    font-weight:500;
+}
+
+/* ---- actions ---- */
+
+.form-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:13px 22px;
+    border-radius:12px;
+    border:none;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:.25s ease;
+    font-family:'Manrope', sans-serif;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-green{
+    background:var(--teal);
+    color:#fff;
+}
+
+.btn-green:hover{
+    background:#0b7a70;
+    box-shadow:0 8px 20px rgba(13,148,136,.25);
+}
+
+.btn-blue{
+    background:var(--indigo-soft);
+    color:var(--indigo-deep);
+}
+
+.btn-blue:hover{
+    background:var(--indigo);
+    color:#fff;
+    box-shadow:0 8px 20px rgba(79,70,229,.25);
+}
+</style>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-calendar-check"></i>
+        Mes demandes de congé
+    </h2>
+
+    <p>
+        Consultez l'historique et le statut de vos demandes de congé.
+    </p>
+
+</div>
+
+<div class="card">
+
+    {% if leaves %}
+
+    <table class="table">
+
+        <thead>
+
+            <tr>
+
+                <th>Date de début</th>
+
+                <th>Date de fin</th>
+
+                <th>Motif</th>
+
+                <th>Statut</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for leave in leaves %}
+
+            <tr>
+
+                <td>{{ leave.start_date }}</td>
+
+                <td>{{ leave.end_date }}</td>
+
+                <td>{{ leave.reason }}</td>
+
+                <td>
+
+                    {% if leave.status == "pending" %}
+
+                        <span class="badge badge-warning">
+                            <i class="fa-solid fa-clock"></i>
+                            En attente
+                        </span>
+
+                    {% elif leave.status == "approved" %}
+
+                        <span class="badge badge-success">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Acceptée
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge badge-danger">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Refusée
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <i class="fa-solid fa-calendar-xmark fa-4x"></i>
+
+        <h3>Aucune demande de congé</h3>
+
+        <p>
+            Vous n'avez encore effectué aucune demande.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="form-actions">
+
+    <a class="btn btn-green"
+       href="{% url 'leave_request' %}">
+
+        <i class="fa-solid fa-plus"></i>
+
+        Nouvelle demande
+
+    </a>
+
+    <a class="btn btn-blue"
+       href="{% url 'employee_dashboard' %}">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Retour au tableau de bord
+
+    </a>
+
+</div>
+
+{% endblock %}

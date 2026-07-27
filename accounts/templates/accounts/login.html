@@ -1,0 +1,489 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion | BAMMACOS CONSULTING</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Arial,sans-serif;
+}
+
+body{
+
+    height:100vh;
+
+    display:flex;
+
+    background:#f4f7fb;
+
+}
+
+/* ===================== */
+/* Partie gauche */
+/* ===================== */
+
+.left{
+
+    width:50%;
+
+    background:linear-gradient(
+        135deg,
+        #1060A4,
+        #138A3E
+    );
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:60px;
+
+    text-align:center;
+
+}
+
+.logo-box{
+
+    width:140px;
+
+    height:140px;
+
+    background:rgba(255,255,255,.15);
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.logo-box img{
+
+    width:80px;
+
+    height:auto;
+
+    object-fit:contain;
+
+}
+
+.left h1{
+
+    font-size:34px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:18px;
+
+}
+
+.left p{
+
+    font-size:17px;
+
+    line-height:1.9;
+
+    max-width:420px;
+
+    opacity:.95;
+
+}
+
+/* ===================== */
+/* Partie droite */
+/* ===================== */
+
+.right{
+
+    width:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:white;
+
+}
+
+.login-card{
+
+    width:420px;
+
+    padding:45px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+
+}
+
+.login-card h2{
+
+    color:#1060A4;
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+}
+
+.login-card p{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:35px;
+
+}
+
+/* ===================== */
+/* Champs */
+/* ===================== */
+
+.input-group{
+
+    position:relative;
+
+    margin-bottom:22px;
+
+}
+
+.input-group i.field-icon{
+
+    position:absolute;
+
+    top:17px;
+
+    left:15px;
+
+    color:#1060A4;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:15px 45px 15px 45px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+}
+
+.input-group input:focus{
+
+    outline:none;
+
+    border-color:#1060A4;
+
+    box-shadow:0 0 8px rgba(16,96,164,.25);
+
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    top:8px;
+
+    right:6px;
+
+    width:34px;
+
+    height:34px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:none;
+
+    background:transparent;
+
+    color:#888;
+
+    cursor:pointer;
+
+    border-radius:8px;
+
+    transition:.2s;
+
+    font-size:15px;
+
+}
+
+.toggle-password:hover{
+
+    background:#edf5fc;
+
+    color:#1060A4;
+
+}
+
+/* ===================== */
+/* Bouton */
+/* ===================== */
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    background:#1060A4;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:17px;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    background:#138A3E;
+
+    transform:translateY(-2px);
+
+}
+
+/* ===================== */
+
+.error{
+
+    color:#dc3545;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    font-weight:bold;
+
+}
+
+.footer{
+
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#888;
+
+    font-size:14px;
+
+}
+
+@media(max-width:900px){
+
+.left{
+
+    display:none;
+
+}
+
+.right{
+
+    width:100%;
+
+}
+
+}
+.login-card{
+
+    animation:fadeIn .8s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="left">
+
+   <div class="logo-box">
+
+    <img src="{% static 'images/logo.jpg' %}" alt="Logo">
+
+</div>
+    <h1>BAMMACOS CONSULTING</h1>
+
+    <p>
+
+        Plateforme de Gestion des Ressources Humaines
+            <hr style="
+            width:120px;
+            margin:35px auto;
+            border:1px solid rgba(255,255,255,.3);
+            ">
+        <br><br>
+
+   
+    </p>
+
+</div>
+
+<div class="right">
+
+<div class="login-card">
+
+<h2>Bienvenue</h2>
+
+<p>
+
+Connectez-vous à votre espace.
+
+</p>
+
+{% if error %}
+
+<div class="error">
+
+{{ error }}
+
+</div>
+
+{% endif %}
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="input-group">
+
+<i class="fa-solid fa-envelope field-icon"></i>
+
+<input
+type="email"
+name="email"
+placeholder="Adresse e-mail"
+required>
+
+</div>
+
+<div class="input-group">
+
+<i class="fa-solid fa-lock field-icon"></i>
+
+<input
+type="password"
+name="password"
+id="password-field"
+placeholder="Mot de passe"
+required>
+
+<button type="button" class="toggle-password" aria-label="Afficher le mot de passe">
+    <i class="fa-solid fa-eye"></i>
+</button>
+
+</div>
+
+<button type="submit">
+
+<i class="fa-solid fa-right-to-bracket"></i>
+
+Se connecter
+
+</button>
+
+</form>
+
+<div class="footer">
+
+© 2026 BAMMACOS CONSULTING
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+    var toggleBtn = document.querySelector('.toggle-password');
+    var passwordField = document.getElementById('password-field');
+
+    toggleBtn.addEventListener('click', function(){
+        var icon = toggleBtn.querySelector('i');
+        if(passwordField.type === 'password'){
+            passwordField.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
+
+</body>
+
+</html>

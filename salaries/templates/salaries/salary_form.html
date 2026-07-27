@@ -1,0 +1,258 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Créer un salaire
+{% endblock %}
+
+{% block content %}
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+    --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- header ---- */
+
+.salary-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:28px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.salary-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.salary-header > div{
+    position:relative;
+    z-index:1;
+}
+
+.salary-header h1{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.salary-header h1 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.salary-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+}
+
+.header-actions{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.back-btn{
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    padding:13px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(255,255,255,.28);
+    transition:.25s ease;
+}
+
+.back-btn:hover{
+    background:rgba(255,255,255,.24);
+    transform:translateY(-2px);
+}
+
+/* ---- form card ---- */
+
+.salary-form-card{
+    background:var(--surface);
+    border-radius:20px;
+    border:1px solid;
+    box-shadow:var(--shadow-sm);
+    padding:32px 34px;
+    max-width:640px;
+    margin:0 auto;
+}
+
+.salary-form-card form p{
+    margin-bottom:20px;
+}
+
+.salary-form-card form p label{
+    display:block;
+    margin-bottom:7px;
+    font-size:12.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+}
+
+.salary-form-card form p input,
+.salary-form-card form p select,
+.salary-form-card form p textarea{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--bg);
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    transition:.2s ease;
+    box-sizing:border-box;
+}
+
+.salary-form-card form p input:focus,
+.salary-form-card form p select:focus,
+.salary-form-card form p textarea:focus{
+    outline:none;
+    border-color:var(--indigo);
+    background:var(--surface);
+    box-shadow:0 0 0 4px var(--indigo-soft);
+}
+
+.salary-form-card form ul.errorlist{
+    list-style:none;
+    padding:0;
+    margin:6px 0 0;
+    color:var(--red);
+    font-size:12.5px;
+    font-weight:700;
+}
+
+/* ---- boutons ---- */
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    text-decoration:none;
+    color:white;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(13,19,33,.14);
+}
+
+.btn.save{
+    background:var(--indigo);
+}
+
+.btn.save:hover{
+    background:var(--indigo-deep);
+}
+</style>
+
+<div class="salary-header">
+
+    <div>
+
+        <h1>
+            <i class="fa-solid fa-money-check-dollar"></i>
+            Créer un salaire
+        </h1>
+
+        <p>
+            Ajoutez un nouveau bulletin de salaire pour un employé.
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <a href="{% url 'salary_list' %}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Retour
+        </a>
+
+    </div>
+
+</div>
+
+<div class="salary-form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="btn save">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Enregistrer
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

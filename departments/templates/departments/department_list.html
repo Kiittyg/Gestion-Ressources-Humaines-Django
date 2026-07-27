@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestion des départements
+{% endblock %}
+
+{% block content %}
+<style>
+ /*==========================
+GESTION DES DÉPARTEMENTS — MODERN SAAS EDITION
+==========================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+    --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(10,63,110,.18);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- header ---- */
+
+.employee-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:20px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.employee-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.employee-header > div{
+    position:relative;
+    z-index:1;
+}
+
+.employee-header h1{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.employee-header h1 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.employee-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+}
+
+.header-actions{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.back-btn{
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    padding:13px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(255,255,255,.28);
+    transition:.25s ease;
+}
+
+.back-btn:hover{
+    background:rgba(255,255,255,.24);
+    transform:translateY(-2px);
+}
+
+.add-btn{
+    position:relative;
+    z-index:1;
+    background:#fff;
+    color:var(--indigo-deep);
+    padding:13px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.25s ease;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+}
+
+.add-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+}
+
+/* ---- table card ---- */
+
+.employee-table-card{
+    background:var(--surface);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+}
+
+.employee-table-card table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.employee-table-card th{
+    background:var(--bg);
+    color:var(--ink-soft);
+    padding:15px 18px;
+    font-weight:700;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+}
+
+.employee-table-card th:last-child,
+.employee-table-card td:last-child{
+    text-align:center;
+    width:160px;
+}
+
+.employee-table-card td{
+    padding:16px 18px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+}
+
+.employee-table-card td:first-child{
+    color:var(--ink-soft);
+    font-weight:600;
+}
+
+.employee-table-card td:nth-child(2){
+    font-weight:700;
+    color:var(--ink);
+}
+
+.employee-table-card tbody tr:last-child td{
+    border-bottom:none;
+}
+
+.employee-table-card tbody tr:hover{
+    background:var(--indigo-soft);
+}
+
+.employee-table-card td[colspan]{
+    text-align:center;
+    padding:40px 18px;
+    color:var(--ink-soft);
+    font-weight:600;
+    font-size:14.5px;
+}
+
+/* ---- action buttons ---- */
+
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.action-btn{
+    width:36px;
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:10px;
+    text-decoration:none;
+    transition:.2s ease;
+    font-size:13.5px;
+}
+
+.action-btn.green{
+    background:var(--teal-soft);
+    color:var(--teal);
+}
+
+.action-btn.red{
+    background:var(--red-soft);
+    color:var(--red);
+}
+
+.action-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(13,19,33,.14);
+}
+
+.action-btn.green:hover{ background:var(--teal); color:#fff; }
+.action-btn.red:hover{ background:var(--red); color:#fff; }
+</style>
+
+<div class="employee-header">
+
+    <div>
+
+        <h1>
+
+            <i class="fa-solid fa-building"></i>
+
+            Gestion des départements
+
+        </h1>
+
+        <p>
+
+            Gérez les différents départements de l'entreprise.
+
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <a href="{% url 'dashboard_home' %}" class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Tableau de bord
+
+        </a>
+
+        <a href="{% url 'department_create' %}" class="add-btn">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Ajouter un département
+
+        </a>
+
+    </div>
+
+</div>
+
+<div class="employee-table-card">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+             
+
+                <th>Nom du département</th>
+
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for department in departments %}
+
+            <tr>
+
+
+                <td>{{ department.name }}</td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <a href="{% url 'department_update' department.id %}" class="action-btn green">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <a href="{% url 'department_delete' department.id %}" class="action-btn red">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="3">
+
+                    Aucun département enregistré.
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

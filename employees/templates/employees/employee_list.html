@@ -1,0 +1,599 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestion des employés
+{% endblock %}
+
+{% block content %}
+<style>
+ 
+
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+   --indigo:#1060A4;
+   --indigo-deep:#0a3f6e;
+   --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- header ---- */
+
+.employee-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:20px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.employee-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.employee-header > div{
+    position:relative;
+    z-index:1;
+}
+
+.employee-header h1{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.employee-header h1 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.employee-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+}
+
+.add-btn{
+    position:relative;
+    z-index:1;
+    background:#fff;
+    color:var(--indigo-deep);
+    padding:13px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.25s ease;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+}
+
+.add-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+}
+
+.header-actions{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.back-btn{
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    padding:13px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(255,255,255,.28);
+    transition:.25s ease;
+}
+
+.back-btn:hover{
+    background:rgba(255,255,255,.24);
+    transform:translateY(-2px);
+}
+
+/* ---- filter card ---- */
+
+.filter-card{
+    background:var(--surface);
+    padding:22px 24px;
+    border-radius:18px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+    margin-bottom:28px;
+}
+
+.filter-form{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr auto;
+    gap:14px;
+}
+
+.filter-form input,
+.filter-form select{
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--bg);
+    transition:.2s ease;
+}
+
+.filter-form input::placeholder{
+    color:var(--ink-soft);
+}
+
+.filter-form input:focus,
+.filter-form select:focus{
+    outline:none;
+    border-color:var(--indigo);
+    background:#fff;
+    box-shadow:0 0 0 3px var(--indigo-soft);
+}
+
+.filter-form button{
+    background:var(--indigo);
+    color:white;
+    border:none;
+    border-radius:11px;
+    padding:12px 20px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:14px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.25s ease;
+    white-space:nowrap;
+}
+
+.filter-form button:hover{
+    background:var(--indigo-deep);
+    transform:translateY(-1px);
+}
+
+/* ---- table card ---- */
+
+.employee-table-card{
+    background:var(--surface);
+    border-radius:20px;
+    overflow-x:auto;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+}
+
+.employee-table-card table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.employee-table-card th{
+    background:var(--bg);
+    color:var(--ink-soft);
+    padding:15px 14px;
+    font-weight:700;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+}
+
+.employee-table-card td{
+    padding:16px 14px;
+    border-bottom:1px solid var(--line);
+    text-align:center;
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+}
+
+.employee-table-card tbody tr:last-child td{
+    border-bottom:none;
+}
+
+.employee-table-card tbody tr:hover{
+    background:var(--indigo-soft);
+}
+
+/* colonne actions : jamais coupée / jamais wrap */
+.employee-table-card th:last-child,
+.employee-table-card td:last-child{
+    white-space:nowrap;
+    width:1%;
+    padding-left:10px;
+    padding-right:16px;
+}
+
+.employee-photo{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--line);
+}
+
+.employee-avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--indigo-soft);
+    color:var(--indigo);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:19px;
+    margin:auto;
+}
+
+.employee-name{
+    color:var(--ink);
+    text-decoration:none;
+    font-weight:700;
+    transition:.2s ease;
+}
+
+.employee-name:hover{
+    color:var(--indigo);
+}
+
+.status{
+    background:var(--teal-soft);
+    color:var(--teal);
+    padding:6px 16px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    display:inline-block;
+}
+
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+    flex-wrap:nowrap;
+}
+
+.action-btn{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    flex:0 0 auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:10px;
+    text-decoration:none;
+    transition:.2s ease;
+    font-size:13px;
+}
+
+.action-btn.blue{
+    background:var(--indigo-soft);
+    color:var(--indigo);
+}
+
+.action-btn.green{
+    background:var(--teal-soft);
+    color:var(--teal);
+}
+
+.action-btn.red{
+    background:var(--red-soft);
+    color:var(--red);
+}
+
+.action-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(13,19,33,.14);
+}
+
+.action-btn.blue:hover{ background:var(--indigo); color:#fff; }
+.action-btn.green:hover{ background:var(--teal); color:#fff; }
+.action-btn.red:hover{ background:var(--red); color:#fff; }
+
+.employee-table-card td[colspan]{
+    padding:40px 18px;
+    color:var(--ink-soft);
+    font-weight:600;
+    font-size:14.5px;
+}
+
+@media(max-width:1000px){
+
+    .filter-form{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+<div class="employee-header">
+
+    <div>
+
+        <h1>
+            <i class="fa-solid fa-users"></i>
+            Gestion des employés
+        </h1>
+
+        <p>
+            Consultez, recherchez et gérez les employés de l'entreprise.
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <a href="{% url 'dashboard_home' %}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Tableau de bord
+        </a>
+
+        <a href="{% url 'employee_create' %}" class="add-btn">
+            <i class="fa-solid fa-user-plus"></i>
+            Ajouter un employé
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Nom, prénom, matricule..."
+            value="{{ request.GET.search }}"
+        >
+
+        <select name="department">
+
+            <option value="">Tous les départements</option>
+
+            {% for dep in departments %}
+
+            <option
+                value="{{ dep.id }}"
+                {% if request.GET.department == dep.id|stringformat:"s" %}
+                selected
+                {% endif %}
+            >
+                {{ dep.name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <select name="poste">
+
+            <option value="">Tous les postes</option>
+
+            <option value="Junior">Junior</option>
+
+            <option value="Senior">Senior</option>
+
+            <option value="Manager">Manager</option>
+
+             <option value="Manager">Stagiaire</option>
+
+
+              <option value="Manager">Directeur</option>
+
+
+        </select>
+
+        <select name="statut">
+
+            <option value="">Tous les statuts</option>
+
+            <option value="Actif">Actif</option>
+
+            <option value="Inactif">Inactif</option>
+
+        </select>
+
+        <button type="submit">
+
+            <i class="fa-solid fa-filter"></i>
+
+            Filtrer
+
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="employee-table-card">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Photo</th>
+
+                <th>Matricule</th>
+
+                <th>Nom complet</th>
+
+                <th>Email</th>
+
+                <th>Département</th>
+
+                <th>Poste</th>
+
+                <th>Niveau</th>
+
+                <th>Statut</th>
+
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for emp in employees %}
+
+            <tr>
+
+                <td>
+
+                    {% if emp.photo %}
+
+                    <img src="{{ emp.photo.url }}" class="employee-photo">
+
+                    {% else %}
+
+                    <i class="fa-solid fa-user employee-avatar"></i>
+
+                    {% endif %}
+
+                </td>
+
+                <td>{{ emp.matricule }}</td>
+
+                <td>
+
+                    <a href="{% url 'employee_detail' emp.id %}" class="employee-name">
+
+                        {{ emp.nom }} {{ emp.prenom }}
+
+                    </a>
+
+                </td>
+
+                <td>{{ emp.email }}</td>
+
+                <td>{{ emp.department }}</td>
+
+                <td>{{ emp.poste }}</td>
+
+
+                 <td>{{ emp.niveau }}</td>
+                <td>
+
+                    <span class="status">
+
+                        {{ emp.statut }}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <a href="{% url 'employee_detail' emp.id %}" class="action-btn blue">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </a>
+
+                        <a href="{% url 'employee_update' emp.id %}" class="action-btn green">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </a>
+
+                        <a href="{% url 'employee_delete' emp.id %}" class="action-btn red">
+
+                           <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="8">
+
+                    Aucun employé trouvé.
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

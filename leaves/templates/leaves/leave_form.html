@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}
+Demande de congé
+{% endblock %}
+
+{% block content %}
+<style>
+    /*==========================
+DEMANDE DE CONGÉ — MODERN SAAS EDITION
+==========================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+   --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- page header ---- */
+
+.page-header{
+    margin-bottom:28px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.page-header h2{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+    z-index:1;
+}
+
+.page-header h2 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.page-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+    position:relative;
+    z-index:1;
+}
+
+/* ---- form card ---- */
+
+.card.leave-card{
+    background:var(--surface);
+    border-radius:20px;
+    padding:36px;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+    max-width:640px;
+}
+
+.leave-card form p{
+    margin-bottom:20px;
+}
+
+.leave-card form p:last-of-type{
+    margin-bottom:0;
+}
+
+.leave-card form label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:700;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+}
+
+.leave-card form input,
+.leave-card form select,
+.leave-card form textarea{
+    width:100%;
+    padding:13px 15px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    font-size:14.5px;
+    font-weight:500;
+    font-family:'Manrope', sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    transition:.2s ease;
+    box-sizing:border-box;
+}
+
+.leave-card form textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.leave-card form input:focus,
+.leave-card form select:focus,
+.leave-card form textarea:focus{
+    outline:none;
+    border-color:var(--indigo);
+    background:#fff;
+    box-shadow:0 0 0 3px var(--indigo-soft);
+}
+
+.leave-card form ul.errorlist{
+    list-style:none;
+    margin:6px 0 0 0;
+    padding:0;
+    color:var(--red);
+    font-size:13px;
+    font-weight:600;
+}
+
+.leave-card form .helptext{
+    display:block;
+    margin-top:6px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-weight:500;
+}
+
+/* ---- actions ---- */
+
+.form-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:28px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:13px 22px;
+    border-radius:12px;
+    border:none;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:.25s ease;
+    font-family:'Manrope', sans-serif;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-green{
+    background:var(--teal);
+    color:#fff;
+}
+
+.btn-green:hover{
+    background:#0b7a70;
+    box-shadow:0 8px 20px rgba(13,148,136,.25);
+}
+
+.btn-blue{
+    background:var(--indigo-soft);
+    color:var(--indigo-deep);
+}
+
+.btn-blue:hover{
+    background:var(--indigo);
+    color:#fff;
+    box-shadow:0 8px 20px rgba(79,70,229,.25);
+}
+</style>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-calendar-plus"></i>
+        Nouvelle demande de congé
+    </h2>
+
+    <p>
+        Remplissez le formulaire ci-dessous pour envoyer votre demande de congé.
+    </p>
+
+</div>
+
+<div class="card leave-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="form-actions">
+
+            <button type="submit" class="btn btn-green">
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+                Envoyer la demande
+
+            </button>
+
+            <a class="btn btn-blue"
+               href="{% url 'employee_dashboard' %}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Retour au tableau de bord
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

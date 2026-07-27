@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestion des salaires
+{% endblock %}
+
+{% block content %}
+<style>
+    /*==========================
+GESTION DES SALAIRES — ENTERPRISE EDITION
+==========================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+:root{
+    --bg:#f3f5fa;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+    --indigo:#1060A4;
+    --indigo-deep:#0a3f6e;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#b8860b;
+    --amber-soft:#faf3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --gold:#c9a24b;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 44px rgba(10,63,110,.20);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- header ---- */
+
+.salary-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:32px;
+    padding:30px 34px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:22px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.salary-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:280px;
+    height:280px;
+    background:radial-gradient(circle, rgba(255,255,255,.13) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.salary-header::after{
+    content:'';
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:3px;
+    background:linear-gradient(90deg, var(--gold) 0%, transparent 60%);
+    opacity:.8;
+}
+
+.salary-header > div{
+    position:relative;
+    z-index:1;
+}
+
+.salary-header h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:#fff;
+    font-size:26px;
+    letter-spacing:-.01em;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.salary-header h1 i{
+    width:40px;
+    height:40px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.14);
+    backdrop-filter:blur(6px);
+    color:var(--gold);
+    border-radius:12px;
+    font-size:15px;
+    border:1px solid rgba(255,255,255,.18);
+}
+
+.salary-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14.5px;
+    font-weight:500;
+    padding-left:54px;
+}
+
+.header-actions{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.back-btn{
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    padding:13px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(255,255,255,.28);
+    transition:.25s ease;
+}
+
+.back-btn:hover{
+    background:rgba(255,255,255,.24);
+    transform:translateY(-2px);
+}
+
+.create-btn{
+    background:#fff;
+    color:var(--indigo-deep);
+    padding:13px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.25s ease;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+}
+
+.create-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+}
+
+/* ---- table ---- */
+
+.salary-table-card{
+    background:var(--surface);
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+}
+
+.salary-table-card table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.salary-table-card th{
+    background:var(--bg);
+    color:var(--ink-soft);
+    padding:15px 18px;
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+}
+
+.salary-table-card th:not(:first-child),
+.salary-table-card td:not(:first-child){
+    text-align:center;
+}
+
+.salary-table-card td{
+    padding:16px 18px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+}
+
+.salary-table-card td:first-child{
+    font-weight:700;
+    color:var(--ink);
+}
+
+.salary-table-card tbody tr:last-child td{
+    border-bottom:none;
+}
+
+.salary-table-card tbody tr:hover{
+    background:var(--indigo-soft);
+}
+
+.salary{
+    color:var(--teal);
+    font-weight:700;
+}
+
+.deduction{
+    color:var(--red);
+    font-weight:700;
+}
+
+.bonus{
+    color:var(--amber);
+    font-weight:700;
+}
+
+/* ---- boutons d'action (icônes) ---- */
+
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.btn{
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    text-decoration:none;
+    transition:.2s ease;
+    font-size:13.5px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(13,19,33,.14);
+}
+
+.btn.view{
+    background:var(--indigo-soft);
+    color:var(--indigo);
+}
+
+.btn.view:hover{
+    background:var(--indigo);
+    color:#fff;
+}
+
+.btn.pdf{
+    background:var(--teal-soft);
+    color:var(--teal);
+}
+
+.btn.pdf:hover{
+    background:var(--teal);
+    color:#fff;
+}
+
+.btn.edit{
+    background:var(--amber-soft);
+    color:var(--amber);
+}
+
+.btn.edit:hover{
+    background:var(--amber);
+    color:#fff;
+}
+
+.btn.delete{
+    background:var(--red-soft);
+    color:var(--red);
+}
+
+.btn.delete:hover{
+    background:var(--red);
+    color:#fff;
+}
+</style>
+
+<div class="salary-header">
+
+    <div>
+
+        <h1>
+            <i class="fa-solid fa-money-check-dollar"></i>
+            Gestion des salaires
+        </h1>
+
+        <p>
+            Consultez les bulletins de salaire des employés.
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <a href="{% url 'salary_create' %}" class="create-btn">
+            <i class="fa-solid fa-plus"></i>
+            Créer un salaire
+        </a>
+
+        <a href="{% url 'dashboard_home' %}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Tableau de bord
+        </a>
+
+    </div>
+
+</div>
+
+<div class="salary-table-card">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Employé</th>
+                <th>Mois</th>
+                <th>Année</th>
+                <th>Salaire de base</th>
+                <th>Bonus</th>
+                <th>Retenues</th>
+                <th>Salaire net</th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for salary in salaries %}
+
+        <tr>
+
+            <td>
+                {{ salary.employee.prenom }}
+                {{ salary.employee.nom }}
+            </td>
+
+            <td>
+                {{ salary.get_month_display }}
+            </td>
+
+            <td>
+                {{ salary.year }}
+            </td>
+
+            <td>
+                {{ salary.base_salary }} FRANCS
+            </td>
+
+            <td class="bonus">
+                {{ salary.bonus }}
+            </td>
+
+            <td class="deduction">
+                {{ salary.deductions }} FRANCS
+            </td>
+
+            <td class="salary">
+                {{ salary.net_salary }} FRANCS
+            </td>
+
+            <td>
+
+                <div class="action-buttons">
+
+                  
+
+                    <a class="btn edit"
+                       href="{% url 'salary_update' salary.id %}"
+                       title="Modifier">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+
+                    <a class="btn delete"
+                       href="{% url 'salary_delete' salary.id %}"
+                       title="Supprimer">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+
+                    <a class="btn pdf"
+                       href="{% url 'salary_pdf' salary.id %}"
+                       title="Télécharger le PDF">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </a>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="8" style="text-align:center; padding:40px 18px; color:var(--ink-soft); font-weight:600;">
+
+                Aucun bulletin de salaire trouvé.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

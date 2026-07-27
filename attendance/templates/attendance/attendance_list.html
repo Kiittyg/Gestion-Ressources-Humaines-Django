@@ -1,0 +1,498 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestion des présences
+{% endblock %}
+
+{% block content %}
+<style>
+    /* ========================= */
+/* GESTION DES PRESENCES — MODERN SAAS EDITION */
+/* ========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+   --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+
+.attendance-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:28px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.attendance-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.attendance-header > div{
+    position:relative;
+    z-index:1;
+}
+
+.attendance-header h1{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.attendance-header h1 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.attendance-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+}
+
+.header-actions{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.back-btn{
+    background:rgba(255,255,255,.14);
+    color:#fff;
+    padding:13px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(255,255,255,.28);
+    transition:.25s ease;
+}
+
+.back-btn:hover{
+    background:rgba(255,255,255,.24);
+    transform:translateY(-2px);
+}
+
+/* ========================= */
+/* FILTRE */
+/* ========================= */
+
+.filter-card{
+    background:var(--surface);
+    border-radius:18px;
+    padding:22px 24px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+    margin-bottom:28px;
+}
+
+.filter-form{
+    display:flex;
+    align-items:flex-end;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    flex:0 0 auto;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-weight:700;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+    line-height:1;
+}
+
+.form-group input{
+    height:46px;
+    padding:0 14px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    min-width:220px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--bg);
+    transition:.2s ease;
+    box-sizing:border-box;
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:var(--indigo);
+    background:#fff;
+    box-shadow:0 0 0 3px var(--indigo-soft);
+}
+
+/* ========================= */
+/* BOUTONS */
+/* ========================= */
+
+.filter-btn,
+.generate-btn{
+    height:46px;
+    box-sizing:border-box;
+    border:none;
+    padding:0 20px;
+    border-radius:11px;
+    font-weight:700;
+    font-size:14px;
+    text-decoration:none;
+    color:white;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.25s ease;
+    white-space:nowrap;
+    flex:0 0 auto;
+    align-self:flex-end;
+}
+
+.filter-btn{
+    background:var(--indigo);
+}
+
+.filter-btn:hover{
+    background:var(--indigo-deep);
+    transform:translateY(-1px);
+}
+
+.generate-btn{
+    background:var(--teal);
+}
+
+.generate-btn:hover{
+    background:#0b7a70;
+    transform:translateY(-1px);
+}
+
+/* ========================= */
+/* TABLE */
+/* ========================= */
+
+.attendance-table-card{
+    background:var(--surface);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+}
+
+.attendance-table-card table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.attendance-table-card th{
+    background:var(--bg);
+    color:var(--ink-soft);
+    padding:15px 18px;
+    text-align:left;
+    font-weight:700;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    border-bottom:1px solid var(--line);
+}
+
+.attendance-table-card td{
+    padding:16px 18px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+}
+
+.attendance-table-card tbody tr:last-child td{
+    border-bottom:none;
+}
+
+.attendance-table-card tbody tr:hover{
+    background:var(--indigo-soft);
+}
+
+.attendance-table-card td[colspan]{
+    text-align:center;
+    padding:40px 18px;
+    color:var(--ink-soft);
+    font-weight:600;
+    font-size:14.5px;
+}
+
+/* ========================= */
+/* BADGES */
+/* ========================= */
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 15px;
+    border-radius:30px;
+    font-size:12.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+}
+
+.present{
+    background:var(--teal-soft);
+    color:var(--teal);
+}
+
+.late{
+    background:var(--amber-soft);
+    color:var(--amber);
+}
+
+.absent{
+    background:var(--red-soft);
+    color:var(--red);
+}
+
+@media(max-width:700px){
+
+    .filter-form{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .form-group input{
+        min-width:0;
+    }
+
+    .filter-btn,
+    .generate-btn{
+        align-self:stretch;
+        justify-content:center;
+    }
+
+}
+</style>
+<div class="attendance-header">
+
+    <div>
+
+        <h1>
+            <i class="fa-solid fa-calendar-check"></i>
+            Gestion des présences
+        </h1>
+
+        <p>
+            Consultez les présences, les retards et les absences des employés.
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <a href="{% url 'dashboard_home' %}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Tableau de bord
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <div class="form-group">
+
+            <label>Date</label>
+
+            <input
+                type="date"
+                name="date"
+                value="{{ request.GET.date }}"
+            >
+
+        </div>
+
+        <button type="submit" class="filter-btn">
+
+            <i class="fa-solid fa-filter"></i>
+
+            Rechercher
+
+        </button>
+
+        <a href="{% url 'generate_absences' %}" class="generate-btn">
+
+            <i class="fa-solid fa-user-xmark"></i>
+
+            Générer les absences
+
+        </a>
+
+    </form>
+
+</div>
+
+
+<div class="attendance-table-card">
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>Employé</th>
+            <th>Date</th>
+            <th>Arrivée</th>
+            <th>Départ</th>
+            <th>Statut</th>
+            <th>Heures travaillées</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for att in attendances %}
+
+    <tr>
+
+        <td>
+
+            {{ att.employee.prenom }}
+            {{ att.employee.nom }}
+
+        </td>
+
+        <td>{{ att.date }}</td>
+
+        <td>{{ att.check_in }}</td>
+
+        <td>{{ att.check_out }}</td>
+
+        <td>
+
+            {% if att.status == "present" %}
+
+                <span class="status present">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Présent
+
+                </span>
+
+            {% elif att.status == "late" %}
+
+                <span class="status late">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    Retard
+
+                </span>
+
+            {% else %}
+
+                <span class="status absent">
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
+                    Absent
+
+                </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            {{ att.worked_hours|floatformat:2 }} h
+
+        </td>
+
+    </tr>
+
+    {% empty %}
+
+    <tr>
+
+        <td colspan="6">
+
+            Aucune présence trouvée.
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

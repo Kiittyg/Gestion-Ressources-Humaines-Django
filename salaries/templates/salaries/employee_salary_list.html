@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mes bulletins de salaire
+{% endblock %}
+
+{% block content %}
+<style>
+    /*==========================
+MES BULLETINS DE SALAIRE — MODERN SAAS EDITION
+==========================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --ink:#0d1321;
+    --ink-soft:#6b7280;
+    --line:#e9ecf3;
+    --indigo:#1060A4;
+    --indigo-deep:#0b4b81;
+    --indigo-soft:#edf5fc;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --amber:#d97706;
+    --amber-soft:#fef3e2;
+    --red:#dc2626;
+    --red-soft:#fdecec;
+    --shadow-sm:0 1px 2px rgba(13,19,33,.04), 0 1px 1px rgba(13,19,33,.03);
+    --shadow-md:0 8px 24px rgba(13,19,33,.08);
+    --shadow-lg:0 20px 40px rgba(79,70,229,.14);
+}
+
+* { font-family:'Manrope', sans-serif; }
+
+/* ---- page header ---- */
+
+.page-header{
+    margin-bottom:28px;
+    padding:26px 30px;
+    background:linear-gradient(120deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-60%;
+    right:-6%;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    border-radius:50%;
+}
+
+.page-header h2{
+    color:#fff;
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+    z-index:1;
+}
+
+.page-header h2 i{
+    width:38px;
+    height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.16);
+    border-radius:11px;
+    font-size:15px;
+}
+
+.page-header p{
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+    font-weight:500;
+    padding-left:50px;
+    position:relative;
+    z-index:1;
+}
+
+/* ---- card / table ---- */
+
+.card{
+    background:var(--surface);
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+}
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table th{
+    background:var(--bg);
+    color:var(--ink-soft);
+    padding:15px 22px;
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+}
+
+.table th:not(:first-child),
+.table td:not(:first-child){
+    text-align:center;
+}
+
+.table td{
+    padding:16px 22px;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+}
+
+.table tbody tr:last-child td{
+    border-bottom:none;
+}
+
+.table tbody tr:hover{
+    background:var(--indigo-soft);
+}
+
+.deduction{
+    color:var(--red) !important;
+    font-weight:700;
+}
+
+.net{
+    color:var(--teal) !important;
+    font-weight:700;
+}
+
+/* ---- empty state ---- */
+
+.empty-state{
+    padding:60px 30px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-weight:600;
+    font-size:14.5px;
+}
+
+.empty-state i{
+    display:block;
+    font-size:34px;
+    color:var(--indigo-soft);
+    margin-bottom:14px;
+}
+
+/* ---- boutons ---- */
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:11px 20px;
+    border-radius:11px;
+    border:none;
+    text-decoration:none;
+    font-weight:700;
+    font-size:13.5px;
+    cursor:pointer;
+    transition:.25s ease;
+    font-family:'Manrope', sans-serif;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-blue{
+    background:var(--indigo-soft);
+    color:var(--indigo-deep);
+    padding:9px 16px;
+    font-size:13px;
+}
+
+.btn-blue:hover{
+    background:var(--indigo);
+    color:#fff;
+    box-shadow:0 6px 14px rgba(79,70,229,.25);
+}
+
+.btn-green{
+    background:var(--teal);
+    color:#fff;
+    padding:13px 22px;
+    font-size:14.5px;
+}
+
+.btn-green:hover{
+    background:#0b7a70;
+    box-shadow:0 8px 20px rgba(13,148,136,.25);
+}
+</style>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-money-check-dollar"></i>
+        Mes bulletins de salaire
+    </h2>
+
+    <p>
+        Consultez et téléchargez vos bulletins de salaire.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <table class="table">
+
+        <thead>
+
+            <tr>
+
+                <th>Mois</th>
+
+                <th>Année</th>
+
+                <th>Salaire de base</th>
+                <th>Bonus</th>
+                <th>Retenues</th>
+
+                <th>Salaire net</th>
+
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for salary in salaries %}
+
+            <tr>
+
+                <td>{{ salary.get_month_display }}</td>
+
+                <td>{{ salary.year }}</td>
+
+                <td>{{ salary.base_salary }} FRANCS</td>
+                 <td>{{ salary.bonus }} FRANCS</td>
+                <td class="deduction">
+                    - {{ salary.deductions }} FRANCS
+                </td>
+
+                <td class="net">
+                    {{ salary.net_salary }} FRANCS
+                </td>
+
+                <td>
+
+                    <a class="btn btn-blue"
+                       href="{% url 'salary_detail' salary.id %}">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        Voir
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty-state">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Aucun bulletin de salaire disponible.
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div style="margin-top:24px;">
+
+    <a class="btn btn-green"
+       href="{% url 'employee_dashboard' %}">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Retour au tableau de bord
+
+    </a>
+
+</div>
+
+{% endblock %}
