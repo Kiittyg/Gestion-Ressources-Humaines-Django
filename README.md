@@ -42,17 +42,17 @@ Cette application web de gestion des ressources humaines a été développée da
 
 ![Connexion](screenshots/connexion.png)
 
-### 📊 Tableau de bord
+### 📊 Dashboard RH
 
 ![Dashboard](screenshots/dashboard_Rh.png)
 
-### 👨‍💼 Gestion des employés
+### 👨‍💼 Dashboard Employes
 
 ![Employés](screenshots/dashboard_employe.png)
 
 ### 🏢 Gestion des départements
 
-![Départements](screenshots/gestion_departments.png)
+![Départements](screenshots/gestion_departements.png)
 
 ### 📅 Gestion des congés
 
